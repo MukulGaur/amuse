@@ -5,15 +5,19 @@ import axios from 'axios';
 
 const InsertTicket = () => {
 
-    const [ticket, setTicket] = useState({
-        
-    });
-    
+    // const [ticket, setTicket] = useState({});
 
+    const [bill, setBill] = useState();
+    const [dateTime, setDateTime] = useState();
+    const [activity, setActivity] = useState({});
+    const [customer, setCustomer] = useState({});
+
+    const data = {bill, dateTime, activity, customer};
     const formHandler = (e) => {
         
-        insertTicketDetails(ticket);
-        console.log(ticket);
+        // insertTicketDetails(ticket);
+        insertTicketDetails(data);
+        console.log(data);
         e.preventDefault();
     };
 
@@ -39,7 +43,7 @@ const InsertTicket = () => {
                     fullWidth
                     className='mb-3'
                     onChange={ (e) => {
-                        setTicket({...ticket, bill:e.target.value})
+                        setBill(e.target.value)
                     }}
                 />
                 <TextField
@@ -48,7 +52,7 @@ const InsertTicket = () => {
                     fullWidth
                     className='mb-3'
                     onChange={ (e) => {
-                        setTicket({...ticket, dateTime:e.target.value})
+                        setDateTime(e.target.value)
                     }}
                 />
                 <TextField
@@ -57,7 +61,7 @@ const InsertTicket = () => {
                     fullWidth
                     className='mb-3'
                     onChange={ (e) => {
-                        setTicket({...ticket, activityId:e.target.value})
+                        setActivity({...activity, activityId:e.target.value})
                     }}
                 />
                 <TextField
@@ -66,7 +70,7 @@ const InsertTicket = () => {
                     fullWidth
                     className='mb-3'
                     onChange={ (e) => {
-                        setTicket({...ticket, userId:e.target.value})
+                        setCustomer({...customer, userId:e.target.value})
                     }}
                 />
                 <Button type='submit' variant='primary' >SUBMIT</Button>
