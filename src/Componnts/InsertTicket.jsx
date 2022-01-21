@@ -5,33 +5,20 @@ import axios from 'axios';
 
 const InsertTicket = () => {
 
-    const [ticket, setTicket] = useState({});
-
-    const [activity, setActivity] = useState({
-        activityId: 1,
-        activityName: "act-1",
-        charges: 10,
-        description: "testing-1"
+    const [ticket, setTicket] = useState({
+        
     });
-    const [customer, setCustomer] = useState({
-        email: "user1@gmail.com",
-        firstName: "user",
-        lastName: "test",
-        mobileNumber: "1234",
-        password: "pass",
-        userId: 2,
-        username: "usertest"
-    });
-
     
 
     const formHandler = (e) => {
-        insertTicketDetails(ticket, activity, customer);
+        
+        insertTicketDetails(ticket);
+        console.log(ticket);
         e.preventDefault();
     };
 
-    const insertTicketDetails = (data, activity1, customer1) => {
-        axios.post(`${BaseUrl}/insertTicket`, data, activity1, customer1).then(
+    const insertTicketDetails = (data) => {
+        axios.post(`${BaseUrl}/insertTicket`, data).then(
             (response) => {
                 console.log(response);
                 console.log("Success");
@@ -70,7 +57,7 @@ const InsertTicket = () => {
                     fullWidth
                     className='mb-3'
                     onChange={ (e) => {
-                        setActivity({...activity, activityId:e.target.value})
+                        setTicket({...ticket, activityId:e.target.value})
                     }}
                 />
                 <TextField
@@ -79,7 +66,7 @@ const InsertTicket = () => {
                     fullWidth
                     className='mb-3'
                     onChange={ (e) => {
-                        setCustomer({...customer, userId:e.target.value})
+                        setTicket({...ticket, userId:e.target.value})
                     }}
                 />
                 <Button type='submit' variant='primary' >SUBMIT</Button>
