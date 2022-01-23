@@ -1,8 +1,14 @@
-import { Container, Paper, Table, TableBody, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
+import { Button, Container, Paper, Stack, Table, TableBody, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { styled } from '@mui/material/styles';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import BorderColorIcon from '@mui/icons-material/BorderColor';
+import BaseUrl from './BaseUrl';
+import { Toast } from 'bootstrap';
+import { Link } from 'react-router-dom';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -26,7 +32,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
 const BaseURL = `http://localhost:8080/api/getAllTickets`;
 
-const columns = ['Ticket-ID', 'Bill', 'Date-Time', 'Activity-ID', 'User-ID'];
+const columns = ['Ticket-ID', 'Bill', 'Date-Time', 'Activity-ID', 'User-ID', 'Action'];
 
 const GetAllTickets = () => {
 
@@ -39,6 +45,17 @@ const GetAllTickets = () => {
         });
     }, []);
 
+    const deleteTicket = (ticket_id) => {
+        axios
+            .delete(`${BaseUrl}/deleteTicketById/${ticket_id}`)
+            .then( (response) => {
+                Toast.success('Deleted!');
+            },
+            (error) => {
+                Toast.error("Error!");
+            })
+    }
+
     return (
         <TableContainer className='mb-5' component={Paper} >
                 <Table  aria-label="customized table" >
@@ -47,7 +64,7 @@ const GetAllTickets = () => {
                             {
                                 columns.map( (name, indx) => {
                                     return (
-                                        <StyledTableCell key={indx} >{name}</StyledTableCell>
+                                        <StyledTableCell align="center" key={indx} >{name}</StyledTableCell>
                                     )
                                 })
                             }
@@ -55,14 +72,28 @@ const GetAllTickets = () => {
                     </TableHead>
                     <TableBody>
                         {
-                            ticket.map( (tic) => {
+                            ticket.map( (tic, indx) => {
                                 return (
-                                    <StyledTableRow key={tic.ticketID} >
+                                    <StyledTableRow key={indx+1} >
                                         <StyledTableCell align="left">{tic.ticketId}</StyledTableCell>
                                         <StyledTableCell align="left">{tic.bill}</StyledTableCell>
                                         <StyledTableCell align="left">{tic.dateTime}</StyledTableCell>
                                         <StyledTableCell align="left">{tic.activity.activityId}</StyledTableCell>
                                         <StyledTableCell align="left">{tic.customer.userId}</StyledTableCell>
+                                        <StyledTableCell align="left">
+                                            <Stack direction="row" spacing={1}>
+                                                <IconButton aria-label="delete" color='error' onClick={() => {
+                                                    deleteTicket(tic.ticketId)
+                                                }}>
+                                                    <DeleteIcon />
+                                                </IconButton>
+                                                <Link to='/updateticket' >
+                                                    <IconButton aria-label="delete" color='warning'>
+                                                        <BorderColorIcon />
+                                                    </IconButton>
+                                                </Link>
+                                            </Stack>
+                                        </StyledTableCell>
                                     </StyledTableRow>
                                 )
                             })

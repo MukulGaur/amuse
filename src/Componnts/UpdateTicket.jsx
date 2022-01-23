@@ -3,26 +3,24 @@ import React, { useState } from 'react'
 import BaseUrl from './BaseUrl';
 import axios from 'axios';
 
-const InsertTicket = () => {
+const UpdateTicket = () => {
 
-    // const [ticket, setTicket] = useState({});
-
+    const [ticketID, setTicketID] = useState();
     const [bill, setBill] = useState();
     const [dateTime, setDateTime] = useState();
     const [activity, setActivity] = useState({});
     const [customer, setCustomer] = useState({});
 
     const data = {bill, dateTime, activity, customer};
+
     const formHandler = (e) => {
-        
-        // insertTicketDetails(ticket);
-        insertTicketDetails(data);
-        console.log(data);
+        insertTicketDetails(data, ticketID);
+        console.log(data, ticketID);
         e.preventDefault();
     };
 
-    const insertTicketDetails = (data) => {
-        axios.post(`${BaseUrl}/insertTicket`, data).then(
+    const insertTicketDetails = (data, tic_id) => {
+        axios.put(`${BaseUrl}/updateTicketById/${tic_id}`, data).then(
             (response) => {
                 console.log(response);
                 console.log("Success");
@@ -36,7 +34,16 @@ const InsertTicket = () => {
 
     return (
         <Container maxWidth='sm mt-5'>
-            <form onSubmit={formHandler}>
+            <form onSubmit={formHandler} >
+                <TextField
+                    label='Ticket-ID'
+                    type='number'
+                    fullWidth
+                    className='mb-3'
+                    onChange={ (e) => {
+                        setTicketID(e.target.value)
+                    }}
+                />
                 <TextField
                     label='Bill'
                     type='number'
@@ -73,10 +80,10 @@ const InsertTicket = () => {
                         setCustomer({...customer, userId:e.target.value})
                     }}
                 />
-                <Button type='submit' variant='contained' >SUBMIT</Button>
+                <Button type='submit' variant='contained' >UPDATE</Button>
             </form>
         </Container>
-    )
-}
+    );
+};
 
-export default InsertTicket
+export default UpdateTicket;

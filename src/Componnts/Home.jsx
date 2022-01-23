@@ -1,9 +1,14 @@
-import React from 'react'
+import { Container, Box } from '@mui/material'
+import React, { useState } from 'react'
+import SignIn from './SignIn'
 
 const Home = () => {
+
     return (
-        <div className='container mt'>
-            <h1>Home page</h1>
+        <div>
+            <Container className='mt-5' maxWidth="md" >
+                <SignIn/>
+            </Container>
         </div>
     )
 }
